@@ -1,42 +1,49 @@
 @extends('layouts.main')
 
 @section('content')
-    <main>
-        <div class="container-fluid px-4">
-            <h1 class="mt-4">Product</h1>
-            <div class="card mb-4">
-                <div class="card-body">
-                    <table id="datatablesSimple" class="table table-hover">
-                        <thead class="table-secondary">
-                            <tr>
-                                <th>#</th>
-                                <th>Avatar</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>Testing Avatar</td>
-                                <td>Testing Name</td>
-                                <td>Testing Email</td>
-                                <td>Testing Role</td>
-                                <td>Testing Phone</td>
-                                <td>Testing Address</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-pencil"></i></button>
-                                    <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <main>
+    <div class="container-fluid px-4">
+      <h1 class="mt-4">User</h1>
+      <a href="{{ route('user.create') }}" type="button" class="btn btn-primary mb-2 mt-2">Add</a>
+      <div class="card mb-4">
+        <div class="card-body">
+          <table id="datatablesSimple" class="table table-hover">
+            <thead class="table-secondary">
+              <tr>
+                <th>#</th>
+                <th>Avatar</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Phone</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($users as $user)
+                <tr>
+                  <td>{{ $loop->iteration }}</td>
+                  <td>Testing Avatar</td>
+                  <td>{{ $user->name }}</td>
+                  <td>{{ $user->email }}</td>
+                  <td>{{ $user->role->name }}</td>
+                  <td>{{ $user->phone }}</td>
+                  <td>
+                    <form onsubmit="return confirm('Are you sure? ')" action="{{ route('user.destroy', $user->id) }}"
+                      method="POST">
+                      <a href="{{ route('user.edit', $user->id) }}" type="button" class="btn btn-warning">Edit</a>
+                      @csrf
+                      @method('DELETE')
+
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 @endsection

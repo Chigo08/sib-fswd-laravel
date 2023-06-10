@@ -27,4 +27,29 @@ class BrandController extends Controller
 
         return redirect()->route('brand.index');
     }
+
+    public function edit($id)
+    {
+        $brand = Brand::where('id', $id)->first();
+
+        return view('brand.edit', compact('brand'));
+    }
+
+    public function update($id, Request $request)
+    {
+        Brand::where('id', $id)->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('brand.index');
+    }
+
+    public function destroy($id)
+    {
+        $brand = Brand::find($id);
+
+        $brand->delete();
+
+        return redirect()->route('brand.index');
+    }
 }

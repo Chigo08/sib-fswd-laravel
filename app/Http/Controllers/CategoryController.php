@@ -27,4 +27,29 @@ class CategoryController extends Controller
 
         return redirect()->route('category.index');
     }
+
+    public function edit($id)
+    {
+        $category = Category::where('id', $id)->first();
+
+        return view('category.edit', compact('category'));
+    }
+
+    public function update($id, Request $request)
+    {
+        Category::where('id', $id)->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('category.index');
+    }
+
+    public function destroy($id)
+    {
+        $category = Category::find($id);
+
+        $category->delete();
+
+        return redirect()->route('category.index');
+    }
 }

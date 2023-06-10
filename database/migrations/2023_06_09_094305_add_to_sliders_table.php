@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups_users', function (Blueprint $table) {
-            $table->bigInteger('user_id');
-            $table->bigInteger('group_id');
+        Schema::table('sliders', function (Blueprint $table) {
+            $table->string('title')->after('id');
+            $table->text('caption')->after('image');
         });
     }
 
@@ -26,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups_users');
+        Schema::table('sliders', function (Blueprint $table) {
+            $table->dropColumn('title');
+            $table->dropColumn('image');
+        });
     }
 };

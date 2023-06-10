@@ -21,8 +21,14 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $brand['name'] }}</td>
                   <td>
-                    <a href="#" class="btn btn-warning">Edit</a>
-                    <button class="btn btn-danger">Delete</button>
+                    <form onsubmit="return confirm('Are you sure? ');" action="{{ route('brand.destroy', $brand->id) }}"
+                      method="POST">
+                      <a href="{{ route('brand.edit', $brand->id) }}" class="btn btn-warning">Edit</a>
+                      @csrf
+                      @method('DELETE')
+
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                   </td>
                 </tr>
               @endforeach

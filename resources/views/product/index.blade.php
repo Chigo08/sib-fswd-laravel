@@ -4,13 +4,14 @@
   <main>
     <div class="container-fluid px-4">
       <h1 class="mt-4">Product</h1>
-      <a href="{{ route('product.create') }}" type="button" class="btn btn-primary mt-2 mb-2">Add</a>
+      <a href="{{ route('product.create') }}" type="button" class="btn btn-primary mb-2 mt-2">Add</a>
       <div class="card mb-4">
         <div class="card-body">
           <table id="datatablesSimple">
             <thead>
               <tr>
                 <th>#</th>
+                <th>Image</th>
                 <th>Category</th>
                 <th>Name</th>
                 <th>Price</th>
@@ -23,14 +24,28 @@
               @foreach ($products as $product)
                 <tr>
                   <td>{{ $loop->iteration }}</td>
+                  <td>
+                    @if ($product->image == null)
+                      <span class="badge bg-primary">No Image</span>
+                    @else
+                      <img src="{{ asset('storage/product/' . $product->image) }}" alt="{{ $product->name }}"
+                        style="max-width: 50px">
+                    @endif
+                  </td>
                   <td>{{ $product->category->name }}</td>
                   <td>{{ $product->name }}</td>
                   <td>Rp. {{ number_format($product->price, 0, 2) }}</td>
                   <td>Rp. {{ number_format($product->sale_price, 0, 2) }}</td>
                   <td>{{ $product->brands }}</td>
                   <td>
-                    <a href="#" class="btn btn-warning">Edit</a>
-                    <button class="btn btn-danger">Delete</button>
+                    <form onsubmit="return confirm('Are you sure? ');"
+                      action="{{ route('product.destroy', $product->id) }}" method="POST">
+                      <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning">Edit</a>
+                      @csrf
+                      @method('DELETE')
+
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                   </td>
                 </tr>
               @endforeach

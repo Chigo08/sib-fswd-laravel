@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('group_users', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('users_id');
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('image')->nullable()->after('rating');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_users');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('image');
+        });
     }
 };

@@ -46,7 +46,7 @@
             Cart
             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
           </button>
-          <a href="{{ route('dashboard') }}" class="btn btn-outline-dark ms-1">
+          <a href="{{ route('login') }}" class="btn btn-outline-dark ms-1">
             Login
           </a>
         </form>
@@ -56,23 +56,22 @@
   <!-- Header-->
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-        aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-        aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-        aria-label="Slide 3"></button>
+      @foreach ($sliders as $slider)
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $loop->iteration - 1 }}"
+          class="{{ $loop->first ? 'active' : '' }}" aria-current="{{ $loop->first ? 'true' : '' }}"
+          aria-label="Slide 1"></button>
+      @endforeach
     </div>
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="https://picsum.photos/1080/240.webp?random=1" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://picsum.photos/1080/240.webp?random=2" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://picsum.photos/1080/240.webp?random=3" class="d-block w-100" alt="...">
-      </div>
+      @foreach ($sliders as $slider)
+        <div class="carousel-item {{ $loop->first ? 'active' : '' }}" data-bs-interval="3000">
+          <img src="{{ asset('storage/slider/' . $slider->image) }}" class="d-block w-100" alt="{{ $slider->image }}">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ $slider->title }}</h5>
+            <p>{{ $slider->caption }}</p>
+          </div>
+        </div>
+      @endforeach
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
       data-bs-slide="prev">
@@ -88,216 +87,71 @@
   <!-- Section-->
   <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
+      <form action="{{ route('landing') }}" method="GET">
+        @csrf
+        <div class="row g-3 my-5">
+          <div class="col-sm-3">
+            <input type="text" class="form-control" placeholder="Min" name="min" value="{{ old('min') }}">
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" placeholder="Max" name="max" value={{ old('max') }}>
+          </div>
+          <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary">Terapkan</button>
+          </div>
+        </div>
+      </form>
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Fancy Product</h5>
-                <!-- Product price-->
-                $40.00 - $80.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View
-                  options</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Sale badge-->
-            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
-              Sale
-            </div>
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Special Item</h5>
-                <!-- Product reviews-->
-                <div class="d-flex justify-content-center small text-warning mb-2">
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
+
+        @forelse ($products as $product)
+          <div class="col mb-5">
+            <div class="card h-100">
+              @if ($product['sale_price'] != 0)
+                <!-- Sale badge-->
+                <div class="badge bg-success text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
                 </div>
-                <!-- Product price-->
-                <span class="text-muted text-decoration-line-through">$20.00</span>
-                $18.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
-                  cart</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Sale badge-->
-            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
-              Sale</div>
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Sale Item</h5>
-                <!-- Product price-->
-                <span class="text-muted text-decoration-line-through">$50.00</span>
-                $25.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
-                  cart</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Popular Item</h5>
-                <!-- Product reviews-->
-                <div class="d-flex justify-content-center small text-warning mb-2">
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
+              @endif
+
+              <!-- Product image-->
+              <img class="card-img-top" src="{{ asset('storage/product/' . $product->image) }}"
+                alt="{{ $product->name }}" />
+
+              <!-- Product details-->
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name-->
+                  <a href="{{ route('product.show', ['id' => $product->id]) }}" style="text-decoration: none"
+                    class="text-dark">
+                    <small class="text-strong">{{ $product->category->name }}</small>
+                    <h5 class="fw-bolder">{{ $product->name }}</h5>
+                  </a>
+                  <!-- Product reviews-->
+                  <div class="d-flex justify-content-center small text-warning mb-2">
+                    @for ($i = 0; $i < $product->rating; $i++)
+                      <div class="bi-star-fill"></div>
+                    @endfor
+                  </div>
+                  <!-- Product price-->
+                  @if ($product['sale_price'] != 0)
+                    <span
+                      class="text-muted text-decoration-line-through">Rp.{{ number_format($product->price, 0) }}</span>
+                    Rp.{{ number_format($product->sale_price, 0) }}
+                  @else
+                    Rp.{{ number_format($product->price, 0) }}
+                  @endif
                 </div>
-                <!-- Product price-->
-                $40.00
+              </div>
+              <!-- Product actions-->
+              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
               </div>
             </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
-                  cart</a></div>
-            </div>
           </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Sale badge-->
-            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
-              Sale</div>
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Sale Item</h5>
-                <!-- Product price-->
-                <span class="text-muted text-decoration-line-through">$50.00</span>
-                $25.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
-                  cart</a></div>
-            </div>
+        @empty
+          <div class="alert alert-secondary w-100 text-center" role="alert">
+            <h4>Produk belum tersedia</h4>
           </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Fancy Product</h5>
-                <!-- Product price-->
-                $120.00 - $280.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View
-                  options</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Sale badge-->
-            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
-              Sale</div>
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Special Item</h5>
-                <!-- Product reviews-->
-                <div class="d-flex justify-content-center small text-warning mb-2">
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                </div>
-                <!-- Product price-->
-                <span class="text-muted text-decoration-line-through">$20.00</span>
-                $18.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
-                  cart</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Product image-->
-            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Popular Item</h5>
-                <!-- Product reviews-->
-                <div class="d-flex justify-content-center small text-warning mb-2">
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                  <div class="bi-star-fill"></div>
-                </div>
-                <!-- Product price-->
-                $40.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to
-                  cart</a></div>
-            </div>
-          </div>
-        </div>
+        @endforelse
       </div>
     </div>
   </section>
