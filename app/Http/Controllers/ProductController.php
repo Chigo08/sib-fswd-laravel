@@ -23,8 +23,6 @@ class ProductController extends Controller
         }
     }
 
-
-
     public function show($id)
     {
         $product = Product::where('id', $id)->with('category')->first();
