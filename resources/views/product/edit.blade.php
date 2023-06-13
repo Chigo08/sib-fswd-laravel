@@ -43,6 +43,11 @@
                   @endforeach
                 </select>
               </div>
+              <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input class="form-control" type="file" name="image" id="image"
+                  accept=".jpg, .jpeg, .png, .webp">
+              </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <a href="{{ route('product.index') }}" type="button" class="btn btn-secondary">Cancel</a>

@@ -6,7 +6,7 @@
       <h1 class="mt-4">User</h1>
       <a href="{{ route('user.create') }}" type="button" class="btn btn-primary mb-2 mt-2">Add</a>
       <div class="card mb-4">
-        <div class="card-body">
+        <div class="card-body text-center">
           <table id="datatablesSimple" class="table table-hover">
             <thead class="table-secondary">
               <tr>
@@ -23,10 +23,16 @@
               @foreach ($users as $user)
                 <tr>
                   <td>{{ $loop->iteration }}</td>
-                  <td>Testing Avatar</td>
+                  <td>
+                    <img src="https://placehold.co/50x50" alt="Dummy Image">
+                  </td>
                   <td>{{ $user->name }}</td>
                   <td>{{ $user->email }}</td>
-                  <td>{{ $user->role->name }}</td>
+                  <td>
+                    <span
+                      class="badge {{ $user->role->name == 'admin' ? 'bg-success' : 'bg-primary' }}">{{ $user->role->name }}
+                    </span>
+                  </td>
                   <td>{{ $user->phone }}</td>
                   <td>
                     <form onsubmit="return confirm('Are you sure? ')" action="{{ route('user.destroy', $user->id) }}"

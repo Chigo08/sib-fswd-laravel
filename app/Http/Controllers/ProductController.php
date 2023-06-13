@@ -16,7 +16,11 @@ class ProductController extends Controller
     {
         $products = Product::with('category')->get();
 
-        return view('product.index', ['products' => $products]);
+        if (Auth::user()->role->name == 'Customer') {
+            return view('product.card', ['products' => $products]);
+        } else {
+            return view('product.index', ['products' => $products]);
+        }
     }
 
 
@@ -44,17 +48,18 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'categories' => 'required',
-        //     'name' => 'required|string|min:3',
-        //     'price' => 'required|integer',
-        //     'brand' => 'required|string',
-        //     'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'category' => 'required',
+            'name' => 'required|string|min:3',
+            'price' => 'required|integer',
+            'sale_price' => 'required|integer',
+            'brands' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator->errors())->withInput();
-        // }
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
 
         $imageName = time() . '.' . $request->image->extension();
 
@@ -119,7 +124,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-
         $product->delete();
 
         return redirect()->route('product.index');

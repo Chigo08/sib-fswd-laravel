@@ -6,7 +6,7 @@
       <h1 class="mt-4">Role</h1>
       <a href="{{ route('role.create') }}" type="button" class="btn btn-primary mb-2 mt-2">Add</a>
       <div class="card mb-4">
-        <div class="card-body">
+        <div class="card-body text-center">
           <table id="datatablesSimple">
             <thead>
               <tr>
