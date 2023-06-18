@@ -41,13 +41,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // ADMIN
-    Route::middleware('role:Admin')->group(function () {
+    Route::middleware('role:Admin|Staff')->group(function () {
         // Slider
         Route::get('/slider', [SliderController::class, 'index'])->name('slider.index');
         Route::get('/slider/create', [SliderController::class, 'create'])->name('slider.create');
         Route::post('/slider', [SliderController::class, 'store'])->name('slider.store');
-        Route::get('/slider/{id}/edit', [SliderController::class, 'edit'])->name('slider.edit');
+        Route::get('/slider/edit/{id}', [SliderController::class, 'edit'])->name('slider.edit');
         Route::put('/slider/{id}', [SliderController::class, 'update'])->name('slider.update');
+        Route::put('/slider/approve/{id}', [SliderController::class, 'approve'])->name('slider.approve');
+        Route::put('/slider/reject/{id}', [SliderController::class, 'reject'])->name('slider.reject');
         Route::delete('/slider/{id}', [SliderController::class, 'destroy'])->name('slider.destroy');
     });
 
@@ -81,8 +83,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:Admin|Staff')->group(function () {
         Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
         Route::post('/product', [ProductController::class, 'store'])->name('product.store');
-        Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
+        Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
         Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
+        Route::put('/product/approve/{id}', [ProductController::class, 'approve'])->name('product.approve');
+        Route::put('/product/reject/{id}', [ProductController::class, 'reject'])->name('product.reject');
         Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
     });
 

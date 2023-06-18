@@ -76,4 +76,26 @@ class SliderController extends Controller
 
         return redirect()->route('slider.index');
     }
+
+    public function approve($id)
+    {
+        // Update data slider
+        Slider::where('id', $id)->update([
+            'approve' => '1',
+        ]);
+
+        // Mengalihkan ke halaman slider
+        return redirect()->back()->with('success', 'Slider approved successfully.');
+    }
+
+    public function reject($id)
+    {
+        // Update data slider
+        Slider::where('id', $id)->update([
+            'approve' => '0',
+        ]);
+
+        // Mengalihkan ke halaman slider
+        return redirect()->back()->with('success', 'Slider rejected successfully.');
+    }
 }

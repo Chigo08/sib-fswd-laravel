@@ -126,4 +126,26 @@ class ProductController extends Controller
 
         return redirect()->route('product.index');
     }
+
+    public function approve($id)
+    {
+        $product = Product::find($id);
+
+        $product->update([
+            'approve' => '1',
+        ]);
+
+        return redirect()->back()->with('success', 'Product approved successfully.');
+    }
+
+    public function reject($id)
+    {
+        $product = Product::find($id);
+
+        $product->update([
+            'approve' => '0',
+        ]);
+
+        return redirect()->back()->with('success', 'Product rejected successfully.');
+    }
 }

@@ -17,6 +17,7 @@
                 <th>Price</th>
                 <th>Sale Price</th>
                 <th>Brand</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -38,15 +39,42 @@
                   <td>Rp. {{ number_format($product->sale_price, 0, 2) }}</td>
                   <td>{{ $product->brands }}</td>
                   <td>
-                    <form onsubmit="return confirm('Are you sure? ');"
-                      action="{{ route('product.destroy', $product->id) }}" method="POST">
-                      <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning">Edit</a>
-                      @csrf
-                      @method('DELETE')
-
-                      <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    @if ($product->approve)
+                      <small class="badge bg-success">Approved</small>
+                    @else
+                      <small class="badge bg-danger">Rejected</small>
+                    @endif
                   </td>
+                  @if (Auth::user()->role->name == 'Admin')
+                    <td>
+                      @if ($product->approve)
+                        <form onsubmit="return confirm('Are you sure? ');"
+                          action="{{ route('product.reject', $product->id) }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        </form>
+                      @else
+                        <form onsubmit="return confirm('Are you sure? ');"
+                          action="{{ route('product.approve', $product->id) }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                        </form>
+                      @endif
+                    </td>
+                  @else
+                    <td>
+                      <form onsubmit="return confirm('Are you sure? ');"
+                        action="{{ route('product.destroy', $product->id) }}" method="POST">
+                        <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning">Edit</a>
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                      </form>
+                    </td>
+                  @endif
                 </tr>
               @endforeach
             </tbody>
